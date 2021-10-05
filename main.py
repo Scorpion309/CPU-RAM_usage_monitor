@@ -94,8 +94,6 @@ class Application(tkinter.Tk, Configure_widgets):
         self.enter_mouse('')
         self.combo_win.current(1)
 
-
-
     def enter_mouse(self, event):
         if self.combo_win.current() == 0 or 1:
             self.geometry('')
