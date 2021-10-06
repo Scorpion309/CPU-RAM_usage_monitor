@@ -16,6 +16,9 @@ class CpuBar:
     def ram_usage_return(self):
         return psutil.virtual_memory()
 
+    def cpu_frequency_return(self):
+        return psutil.cpu_freq()
+
     def mounted_disks_return(self):
         return psutil.disk_partitions()
 

@@ -35,7 +35,7 @@ class Configure_widgets:
             disk_used_percent = disk_info[3]
             self.list_disk_label[index].configure(text=f'Disk {disk_name}({round(disk_total, 1)}Gb),'
                                                        f' usage: {disk_used_percent}%,'
-                                                       f' available: {round(disk_free,1)} Gb')
+                                                       f' available: {round(disk_free, 1)} Gb')
             self.list_disk_pbar_label[index].configure(value=disk_used_percent)
         self.reload_disk_usage = self.after(1000, self.configure_disks_window)
 

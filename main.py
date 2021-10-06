@@ -54,7 +54,9 @@ class Application(tkinter.Tk, Configure_widgets):
         self.combo_win.bind('<<ComboboxSelected>>', self.choise_combo)
 
     def make_bar_cpu_ussage(self):
-        ttk.Label(self.bar, text=f'Physical cores: {self.cpu.cpu_count}, logical cores: {self.cpu.logical_cpu_count}',
+        cpu_frequency = self.cpu.cpu_frequency_return()[0]
+        ttk.Label(self.bar,
+                  text=f'Physical cores: {self.cpu.cpu_count}, logical cores: {self.cpu.logical_cpu_count}, frequency:  {cpu_frequency} Mhz',
                   anchor=tkinter.CENTER).pack(fill=tkinter.X)
 
         self.list_label = []
@@ -74,7 +76,6 @@ class Application(tkinter.Tk, Configure_widgets):
 
     def get_installed_disks(self):
         self.mounted_disks = self.cpu.mounted_disks_return()
-
 
     def show_disk_usage(self):
         if not self.showing_disks:
@@ -100,7 +101,6 @@ class Application(tkinter.Tk, Configure_widgets):
             self.after_cancel(self.reload_disk_usage)
             self.disks_bar.destroy()
             self.showing_disks = False
-
 
     def create_minimal_window(self):
         self.cpu_bar_for_minimal_window = ttk.Progressbar(self, length=100)
