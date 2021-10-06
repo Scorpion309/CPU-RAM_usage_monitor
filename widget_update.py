@@ -29,8 +29,14 @@ class Configure_widgets:
     def configure_disks_window(self):
         for index, disk in enumerate(self.mounted_disks):
             disk_name = disk[0]
-            self.list_disk_label[index].configure(text=f'On disk {disk_name} used: {self.cpu.disk_usage_return(disk_name)} %')
-            self.list_disk_pbar_label[index].configure(value=self.cpu.disk_usage_return(disk_name))
+            disk_info = self.cpu.disk_usage_return(disk_name)
+            disk_total = disk_info[0] / 1073741824
+            disk_free = disk_info[2] / 1073741824
+            disk_used_percent = disk_info[3]
+            self.list_disk_label[index].configure(text=f'Disk {disk_name}({round(disk_total, 1)}Gb),'
+                                                       f' usage: {disk_used_percent}%,'
+                                                       f' available: {round(disk_free,1)} Gb')
+            self.list_disk_pbar_label[index].configure(value=disk_used_percent)
         self.reload_disk_usage = self.after(1000, self.configure_disks_window)
 
     def clear_window(self):
