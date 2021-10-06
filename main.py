@@ -17,6 +17,8 @@ class Application(tkinter.Tk, Configure_widgets):
         self.title('CPU-RAM usage monitor bar')
         self.cpu = CpuBar()
         self.run_with_full_window()
+        self.get_installed_disks()
+        self.showing_disks = False
 
     def run_with_full_window(self):
         self.set_ui()
@@ -40,7 +42,7 @@ class Application(tkinter.Tk, Configure_widgets):
         move_button = ttk.Button(self.bar2, text='move', command=self.configure_window)
         move_button.pack(side=tkinter.LEFT)
 
-        open_button = ttk.Button(self.bar2, text='>>>')
+        open_button = ttk.Button(self.bar2, text='disks', command=self.show_disk_usage)
         open_button.pack(side=tkinter.LEFT)
 
         self.bar = ttk.LabelFrame(self, text='Power')
@@ -69,6 +71,36 @@ class Application(tkinter.Tk, Configure_widgets):
         self.ram_label.pack(fill=tkinter.X)
         self.ram_bar = ttk.Progressbar(self.bar, length=100)
         self.ram_bar.pack(fill=tkinter.X)
+
+    def get_installed_disks(self):
+        self.mounted_disks = self.cpu.mounted_disks_return()
+
+
+    def show_disk_usage(self):
+        if not self.showing_disks:
+            self.list_disk_label = []
+            self.list_disk_pbar_label = []
+            self.disks_bar = ttk.LabelFrame(self, text='Disks')
+            self.disks_bar.pack(fill=tkinter.X)
+            self.disks_label = ttk.Label(self.disks_bar, text='Installed disks:', anchor=tkinter.CENTER)
+            self.disks_label.pack(fill=tkinter.X)
+
+            for _ in self.mounted_disks:
+                self.list_disk_label.append(ttk.Label(self.disks_bar, anchor=tkinter.CENTER))
+                self.list_disk_pbar_label.append(ttk.Progressbar(self.disks_bar, length=100))
+
+            for index, value in enumerate(self.list_disk_label):
+                self.list_disk_label[index].pack(fill=tkinter.X)
+                self.list_disk_pbar_label[index].pack(fill=tkinter.X)
+
+            self.configure_disks_window()
+            self.showing_disks = True
+            self.update()
+        else:
+            self.after_cancel(self.reload_disk_usage)
+            self.disks_bar.destroy()
+            self.showing_disks = False
+
 
     def create_minimal_window(self):
         self.cpu_bar_for_minimal_window = ttk.Progressbar(self, length=100)

@@ -15,3 +15,14 @@ class CpuBar:
 
     def ram_usage_return(self):
         return psutil.virtual_memory()
+
+    def mounted_disks_return(self):
+        return psutil.disk_partitions()
+
+    def disk_usage_return(self, disk):
+        self.disk_info = psutil.disk_usage(disk)
+        self.disk_total = self.disk_info[0]
+        self.disk_used = self.disk_info[1]
+        self.disk_free = self.disk_info[2]
+        self.disk_used_percent = self.disk_info[3]
+        return self.disk_used_percent

@@ -26,6 +26,13 @@ class Configure_widgets:
         self.reload_usage = self.after(1000, self.configure_minimal_window)
         self.update()
 
+    def configure_disks_window(self):
+        for index, disk in enumerate(self.mounted_disks):
+            disk_name = disk[0]
+            self.list_disk_label[index].configure(text=f'On disk {disk_name} used: {self.cpu.disk_usage_return(disk_name)} %')
+            self.list_disk_pbar_label[index].configure(value=self.cpu.disk_usage_return(disk_name))
+        self.reload_disk_usage = self.after(1000, self.configure_disks_window)
+
     def clear_window(self):
         for widget in self.winfo_children():
             widget.destroy()
